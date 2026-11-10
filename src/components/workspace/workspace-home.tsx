@@ -8,6 +8,7 @@ import { SERVICES } from "@/lib/services";
 import { formatPrice } from "@/lib/utils";
 import { useProjects } from "@/lib/store";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const QUICK = ["landing-page-figma-mockup", "seo-audit-report", "portfolio-website", "figma-ui-design"];
 
@@ -54,9 +55,9 @@ export function WorkspaceHome() {
           })}
         </div>
 
-        <a href="/services" className="mt-5 inline-block text-sm font-medium text-primary hover:underline">
+        <Link href="/services" className="mt-5 inline-block text-sm font-medium text-primary hover:underline">
           Browse all 18 services →
-        </a>
+        </Link>
 
         <ul className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
           <li className="flex items-center gap-1.5"><MessagesSquare className="h-3.5 w-3.5" /> AI-guided discovery</li>

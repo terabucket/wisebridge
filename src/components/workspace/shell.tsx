@@ -130,7 +130,7 @@ function ProjectRow({ project, active }: { project: Project; active: boolean }) 
       : project.status === "spec_review"
         ? "📋 Requirements ready for review"
         : last
-          ? `${last.role === "user" ? "You: " : ""}${last.content.replace(/[*#_`>\[\]]/g, "").slice(0, 80) || "📎 Attachment"}`
+          ? `${last.role === "user" ? "You: " : ""}${last.content.replace(/[*#`>\[\]]/g, "").slice(0, 80) || "📎 Attachment"}`
           : "";
   const meta = STATUS_META[project.status];
 

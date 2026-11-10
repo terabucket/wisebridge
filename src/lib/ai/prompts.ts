@@ -1,7 +1,8 @@
 import type { Service } from "../services";
 import type { RequirementSpec } from "../types";
 
-export const READY_TOKEN = "[[READY]]";
+import { READY_TOKEN } from "../constants";
+export { READY_TOKEN };
 
 export function consultantSystemPrompt(service: Service) {
   return `You are "Wise", the AI consultant for WiseBridge (wisebridge.tech), an AI-powered digital services studio by PeachTech LLC.

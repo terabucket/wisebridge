@@ -103,7 +103,7 @@
 }
 
 @utility glass {
-  background: color-mix(in oklab, var(--card) 72%, transparent);
+  background: color-mix(in oklab, var(--card) 88%, transparent);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
 }
@@ -130,11 +130,14 @@
 }
 
 /* Markdown inside chat bubbles */
-.chat-prose {
-  @apply prose prose-sm max-w-none dark:prose-invert prose-p:my-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-headings:mt-3 prose-headings:mb-1.5 prose-pre:my-2 prose-code:before:content-none prose-code:after:content-none prose-a:text-primary;
-}
 .chat-prose :where(code):not(:where(pre code)) {
-  @apply rounded-md bg-black/5 px-1 py-0.5 text-[0.85em] dark:bg-white/10;
+  border-radius: 0.375rem;
+  background: rgb(0 0 0 / 0.05);
+  padding: 0.1rem 0.3rem;
+  font-size: 0.85em;
+}
+.dark .chat-prose :where(code):not(:where(pre code)) {
+  background: rgb(255 255 255 / 0.1);
 }
 
 @media (prefers-reduced-motion: reduce) {

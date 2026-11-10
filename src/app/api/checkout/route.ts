@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin;
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card"],
       line_items: [
         {
           quantity: 1,

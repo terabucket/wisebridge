@@ -8,13 +8,14 @@ import { getService } from "./services";
 import { uid } from "./utils";
 
 /** IndexedDB-backed storage: chats with attachments outgrow localStorage quickly. */
+const hasIDB = () => typeof indexedDB !== "undefined";
 const idbStorage: StateStorage = {
-  getItem: async (name) => (await get<string>(name)) ?? null,
+  getItem: async (name) => (hasIDB() ? ((await get<string>(name)) ?? null) : null),
   setItem: async (name, value) => {
-    await set(name, value);
+    if (hasIDB()) await set(name, value);
   },
   removeItem: async (name) => {
-    await del(name);
+    if (hasIDB()) await del(name);
   },
 };
 

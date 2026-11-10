@@ -1,0 +1,16 @@
+<svg viewBox="0 0 220 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366F1"/><stop offset="0.55" stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="t" x1="120" y1="0" x2="215" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366F1"/><stop offset="0.5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="44" height="44" rx="13" fill="url(#g)"/>
+  <path d="M9 33.5h30" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M11 33.5C14.5 22 19 18.5 24 18.5S33.5 22 37 33.5" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M17.5 33.5v-8M24 33.5V22.5M30.5 33.5v-8" stroke="#fff" stroke-opacity="0.65" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="24" cy="18.5" r="3.25" fill="#fff"/>
+  <text x="58" y="32" font-family="Geist, Inter, system-ui, sans-serif" font-size="24" font-weight="600" letter-spacing="-0.5" fill="#0B0B16">Wise<tspan fill="url(#t)">Bridge</tspan></text>
+</svg>

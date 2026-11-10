@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
+    // Unsplash's CDN already resizes/compresses via URL params (w, q, auto=format),
+    // so serve images straight from it instead of re-optimizing on our server.
+    unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
   turbopack: {

@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, Clock, FileUp, MessagesSquare, RefreshCcw, ShieldCheck } from "lucide-react";
+import { Check, ChevronRight, Clock, FileUp, MessagesSquare, RefreshCcw, ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/motion";
+import { FaqList } from "@/components/faq-list";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbLd, faqLd, graph, serviceFaqs, serviceLd } from "@/lib/seo";
 import { ServiceCard, TierBadge } from "@/components/service-card";
 import { ServiceIcon } from "@/components/service-icon";
 import { StartProjectButton } from "@/components/services/start-project-button";
@@ -18,10 +21,15 @@ export async function generateMetadata({ params }: PageProps<"/services/[slug]">
   const { slug } = await params;
   const s = getService(slug);
   if (!s) return {};
+  const path = `/services/${s.slug}`;
+  const title = `${s.title} — ${formatPrice(s.price)} Fixed Price`;
+  const description = `${s.tagline} ${s.description} Delivered in ${s.turnaround}.`.slice(0, 300);
   return {
-    title: s.title,
-    description: `${s.tagline} ${s.description}`,
-    openGraph: { images: [unsplash(s.image, 1200, 630)] },
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: { type: "website", url: path, title, description },
+    twitter: { title, description },
   };
 }
 
@@ -30,10 +38,22 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
   const service = getService(slug);
   if (!service) notFound();
   const tier = getTier(service.tier);
+  const faqs = serviceFaqs(service);
   const related = SERVICES.filter((s) => s.slug !== service.slug && (s.category === service.category || s.tier === service.tier)).slice(0, 3);
 
   return (
     <>
+      <JsonLd
+        data={graph(
+          serviceLd(service),
+          breadcrumbLd([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: service.title, path: `/services/${service.slug}` },
+          ]),
+          faqLd(faqs),
+        )}
+      />
       <section className="relative isolate overflow-hidden pt-28">
         <div className="absolute inset-0 -z-10">
           <Image src={unsplash(service.image, 1800, 900)} alt="" fill priority sizes="100vw" className="object-cover opacity-25 blur-sm dark:opacity-20" />
@@ -41,9 +61,19 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </div>
 
         <div className="mx-auto max-w-6xl px-6 pt-8 pb-16">
-          <Link href="/services" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> All services
-          </Link>
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+              <li>
+                <Link href="/" className="transition hover:text-foreground">Home</Link>
+              </li>
+              <li aria-hidden><ChevronRight className="h-3.5 w-3.5" /></li>
+              <li>
+                <Link href="/services" className="transition hover:text-foreground">Services</Link>
+              </li>
+              <li aria-hidden><ChevronRight className="h-3.5 w-3.5" /></li>
+              <li aria-current="page" className="text-foreground">{service.title}</li>
+            </ol>
+          </nav>
 
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
             <Reveal>
@@ -56,6 +86,14 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
               <h1 className="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{service.title}</h1>
               <p className="mt-3 font-serif text-2xl text-muted-foreground italic">{service.tagline}</p>
               <p className="mt-6 max-w-xl leading-relaxed text-muted-foreground">{service.description}</p>
+
+              {/* Answer-first summary: the one-paragraph answer search & AI engines can quote. */}
+              <div className="mt-6 max-w-xl rounded-2xl border bg-card/70 p-4 text-sm leading-relaxed">
+                <span className="font-semibold">In short: </span>
+                WiseBridge&apos;s {service.title} costs a fixed <strong>{formatPrice(service.price)}</strong>, is delivered in{" "}
+                <strong>{service.turnaround}</strong> and includes {service.deliverables.slice(0, 3).join("; ")}
+                {service.deliverables.length > 3 ? " and more" : ""}. You scope it with an AI consultant and pay only after approving the requirements.
+              </div>
 
               <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl border shadow-2xl">
                 <Image src={unsplash(service.image, 1400, 788)} alt={service.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
@@ -121,9 +159,18 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         </Reveal>
       </section>
 
+      <section className="mx-auto max-w-3xl px-6 py-12" aria-labelledby="service-faq">
+        <h2 id="service-faq" className="text-2xl font-semibold tracking-tight">
+          {service.title}: frequently asked questions
+        </h2>
+        <div className="mt-6">
+          <FaqList faqs={faqs} />
+        </div>
+      </section>
+
       {related.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-12">
-          <h2 className="text-2xl font-semibold tracking-tight">You might also need</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Related services</h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((s) => (
               <ServiceCard key={s.slug} service={s} />

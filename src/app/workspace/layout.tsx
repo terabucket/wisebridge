@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { WorkspaceShell } from "@/components/workspace/shell";
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function WorkspaceLayout({ children }: { children: React.ReactNode }) {
-  return <WorkspaceShell>{children}</WorkspaceShell>;
+  return (
+    <Suspense fallback={<div className="h-dvh bg-background" />}>
+      <WorkspaceShell>{children}</WorkspaceShell>
+    </Suspense>
+  );
 }

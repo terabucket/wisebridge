@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -12,25 +13,56 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wisebridge.tech";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "WiseBridge — AI-powered design, development & SEO",
-    template: "%s · WiseBridge",
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "WiseBridge bridges your ideas to finished work. Chat with an AI consultant, confirm your requirements, and get Figma designs, websites and SEO strategy delivered — from $100.",
-  keywords: ["AI consultant", "Figma design", "website development", "SEO consulting", "AI agency", "WiseBridge"],
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    "AI consultant",
+    "AI design agency",
+    "Figma design service",
+    "landing page design",
+    "website development",
+    "SEO audit",
+    "SEO consulting",
+    "AI automation",
+    "fixed price web design",
+    "WiseBridge",
+  ],
+  authors: [{ name: "PeachTech LLC", url: SITE_URL }],
+  creator: "PeachTech LLC",
+  publisher: "PeachTech LLC",
+  category: "technology",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: siteUrl,
-    siteName: "WiseBridge",
-    title: "WiseBridge — AI-powered design, development & SEO",
-    description: "Chat with an AI consultant and get expert-reviewed design, development and SEO work delivered fast.",
+    locale: "en_US",
+    url: "/",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {

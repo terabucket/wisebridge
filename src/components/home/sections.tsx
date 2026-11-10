@@ -10,9 +10,7 @@ import {
   CreditCard,
   FileCheck2,
   MessagesSquare,
-  Minus,
   PackageCheck,
-  Plus,
   ShieldCheck,
   Sparkles,
   Upload,
@@ -20,6 +18,8 @@ import {
 } from "lucide-react";
 import { Reveal, SectionHeading, Stagger, StaggerItem } from "@/components/motion";
 import { ServiceCard } from "@/components/service-card";
+import { FaqList } from "@/components/faq-list";
+import type { Faq as FaqItem } from "@/lib/seo";
 import { SERVICES, TIERS } from "@/lib/services";
 import { cn, unsplash } from "@/lib/utils";
 
@@ -366,70 +366,12 @@ export function WhyBento() {
 
 /* ───────────────────────── FAQ ───────────────────────── */
 
-const FAQS = [
-  {
-    q: "How does the AI consultant work?",
-    a: "After choosing a service, you chat with Wise, our AI consultant. It asks targeted questions, reads any files you share and turns the conversation into a requirements spec for you to approve.",
-  },
-  {
-    q: "What kinds of files can I upload?",
-    a: "Anything relevant: Word documents, PDFs, text and spreadsheets, images and screenshots, and videos. Documents and images are read directly; videos are summarized from key frames. Other file types are attached for our team to review.",
-  },
-  {
-    q: "When do I pay?",
-    a: "Only after you've confirmed the requirements. You'll check out securely with your card via Stripe, and generation starts right after.",
-  },
-  {
-    q: "Is the work really reviewed by humans?",
-    a: "Yes. AI handles the heavy lifting; specialists review quality and accuracy. Premium projects get a dedicated human lead.",
-  },
-  {
-    q: "What if I need changes?",
-    a: "Each tier includes revision rounds (Starter 1, Professional 2, Premium unlimited minor tweaks). Just reply in your project chat.",
-  },
-  {
-    q: "Do I own the deliverables?",
-    a: "Yes — once paid, all deliverables and source files are yours to use commercially.",
-  },
-];
-
-export function Faq() {
-  const [open, setOpen] = useState<number | null>(0);
+export function Faq({ faqs }: { faqs: FaqItem[] }) {
   return (
     <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-6 py-24">
       <SectionHeading eyebrow="FAQ" title="Questions, answered" />
-      <Reveal className="mt-12 divide-y rounded-3xl border bg-card">
-        {FAQS.map((f, i) => {
-          const isOpen = open === i;
-          return (
-            <div key={f.q}>
-              <button
-                type="button"
-                className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left font-medium"
-                aria-expanded={isOpen}
-                onClick={() => setOpen(isOpen ? null : i)}
-              >
-                {f.q}
-                <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition", isOpen && "bg-foreground text-background")}>
-                  {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-                </span>
-              </button>
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <p className="px-6 pb-5 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+      <Reveal className="mt-12">
+        <FaqList faqs={faqs} />
       </Reveal>
     </section>
   );

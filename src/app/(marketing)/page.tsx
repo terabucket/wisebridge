@@ -1,9 +1,12 @@
 import { Hero } from "@/components/home/hero";
 import { Cta, Faq, FeaturedServices, HowItWorks, Pricing, Stats, ToolsMarquee, WhyBento } from "@/components/home/sections";
+import { JsonLd } from "@/components/json-ld";
+import { SITE_FAQS, faqLd, graph } from "@/lib/seo";
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={graph(faqLd(SITE_FAQS))} />
       <Hero />
       <ToolsMarquee />
       <Stats />
@@ -11,7 +14,7 @@ export default function HomePage() {
       <HowItWorks />
       <Pricing />
       <WhyBento />
-      <Faq />
+      <Faq faqs={SITE_FAQS} />
       <Cta />
     </>
   );
